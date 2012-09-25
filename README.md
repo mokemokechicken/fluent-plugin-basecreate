@@ -89,3 +89,23 @@ Finished tests in 0.028020s, 107.0665 tests/s, 0.0000 assertions/s.
 
 3 tests, 0 assertions, 0 failures, 0 errors, 0 skips
 ```
+
+=== tree result
+
+```
+$ tree fluent-plugin-moketest
+fluent-plugin-moketest
+├── Gemfile
+├── LICENSE.txt
+├── README.md
+├── Rakefile
+├── fluent-plugin-moketest.gemspec
+├── lib
+│   └── fluent
+│       └── plugin
+│           └── buf_moketest.rb
+└── test
+    ├── helper.rb
+    └── plugin
+        └── test_buf_moketest.rb
+```
