@@ -2,6 +2,7 @@ Fluent Plugin Base Create
 =============
 
 This is a utility to setup Fluent Plugin Development Environment.
+
 It implemnts the method of [http://d.hatena.ne.jp/tagomoris/20120221/1329815126](hhttp://d.hatena.ne.jp/tagomoris/20120221/1329815126) .
 
 
