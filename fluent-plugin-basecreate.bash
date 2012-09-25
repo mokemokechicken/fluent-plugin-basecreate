@@ -1,17 +1,18 @@
 #!/bin/bash
 
-GEM=${GEM_PATH:=`which gem`}
+GEM=`which gem`
 GIT=${GIT_PATH:=`which git`}
 BUNDLE=${BUNDLE_PATH:=`which bundle`}
 THIS_DIR=$(cd $(dirname $0); pwd)
 TEMPLATE_DIR=${TEMPLATE_DIR:=${THIS_DIR}/template}
 
 check_environment () {
-    [ -d "$TEMPLATE_DIR" ] || (echo "${TEMPLATE_DIR} is not directory" && return 1)
-    [ -x "$GEM" ] || (echo "gem not found in your PATH." && return 1)
-    [ -x "$GIT" ] || (echo "git not found in your PATH." && return 1)
-    $GEM list -i bundler > /dev/null || (echo "please install 'bunlder' by 'gem install bundler'" && return 1)
-    [ -x "$BUNDLE" ] || (echo "bundle not found in your PATH." && return 1)
+    [ ! -d "$TEMPLATE_DIR" ] && echo "${TEMPLATE_DIR} is not directory" && exit 1
+    [ ! -x "$GEM" ] && echo "gem not found in your PATH." && exit 1
+    [ ! -x "$GIT" ] && echo "git not found in your PATH." && exit 1
+    $GEM list -i bundler > /dev/null; [ "$?" != "0" ] && echo "please install 'bunlder' by 'gem install bundler'" && exit 1
+    $GEM list -i fluentd > /dev/null; [ "$?" != "0" ] && echo "please install 'fluentd' by 'gem install fluentd'" && exit 1
+    [ ! -x "$BUNDLE" ] && echo "bundle not found in your PATH." && exit 1
 }
 
 
@@ -35,6 +36,7 @@ input_args () {
     input_arg "Plugin Class Name (ex. Status200CounterOutput)? "
     CLASS_NAME=$RET
     ###
+    PLUG_TYPE=(in buf out out)
     CS=(Fluent::Input Fluent::BufferedOutput Fluent::TimeSlicedOutput Fluent::Output)
     TS=(InputTestDriver BufferedOutputTestDriver BufferedOutputTestDriver OutputTestDriver)
     while [ -z "$SUPER_CLASS_NAME" ];
@@ -48,6 +50,7 @@ input_args () {
         SUPER_CLASS_TYPE=$RET
         SUPER_CLASS_NAME=${CS[$SUPER_CLASS_TYPE]}
         TEST_SUPER_CLASS_NAME=${TS[$SUPER_CLASS_TYPE]}
+        PLUG_TYPE_NAME=${PLUG_TYPE[$SUPER_CLASS_TYPE]}
     done
     ###
     echo "================================================"
@@ -74,14 +77,14 @@ copy_template () {
 }
 
 
-check_environment || exit 1
-input_args || exit 1
+check_environment
+input_args
 
 #############
 PLUGIN_DIR_IN_LIB=fluent/plugin
 PLUGIN_LIB_DIR=lib/${PLUGIN_DIR_IN_LIB}
 PLUGIN_TEST_DIR=test/plugin
-PLUGIN_FILENAME=out_${FLUENT_TYPE_NAME}.rb
+PLUGIN_FILENAME=${PLUG_TYPE_NAME}_${FLUENT_TYPE_NAME}.rb
 PLUGIN_TEST_FILENAME=test_${PLUGIN_FILENAME}
 #############
 set -e -a
@@ -101,7 +104,7 @@ HELPER_TEMPLATE=${TEMPLATE_DIR}/helper.rb
 
 copy_template $CLASS_TEMPLATE ${PLUGIN_LIB_DIR}/${PLUGIN_FILENAME}
 copy_template $TEST_CLASS_TEMPLATE ${PLUGIN_TEST_DIR}/${PLUGIN_TEST_FILENAME}
-copy_template $HELPER_TEMPLATE test/hepler.rb
+copy_template $HELPER_TEMPLATE test/helper.rb
 cat ${TEMPLATE_DIR}/Rakefile_add >> Rakefile
 cat ${TEMPLATE_DIR}/.gitignore .gitignore | sort | uniq > .tmp; mv .tmp .gitignore
 
@@ -121,4 +124,6 @@ end
 EOM
 mv .tmp ${SPEC_FILE}
 ### Git
+git add .
+git commit -a -m "fluent-plugin-basecreate.bash's commit"
 

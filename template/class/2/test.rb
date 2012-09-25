@@ -6,6 +6,7 @@ class !!CLASS_NAME!!Test < Test::Unit::TestCase
     end
 
     CONFIG = %[
+        buffer_path /tmp/buffer_!!FLUENT_TYPE_NAME!!
     ]
     # CONFIG = %[
     #   path #{TMP_DIR}/out_file_test
@@ -20,7 +21,7 @@ class !!CLASS_NAME!!Test < Test::Unit::TestCase
     def test_configure
         #### set configurations
         # d = create_driver %[
-        #   path test_path
+        #   buffer_path /tmp/buffer_!!FLUENT_TYPE_NAME!!
         #   compress gz
         # ]
         #### check configurations
