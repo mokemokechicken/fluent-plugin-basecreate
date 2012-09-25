@@ -1,0 +1,11 @@
+*.gem
+.bundle
+Gemfile.lock
+pkg/*
+*.tmproj
+tmtags
+*~
+\#*
+.\#*
+*.swp
+
