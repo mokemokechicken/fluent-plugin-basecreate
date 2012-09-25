@@ -2,6 +2,7 @@ Fluent Plugin Base Create
 =============
 
 This is a utility to setup Fluent Plugin Development Environment.
+It implemnts the method of [http://d.hatena.ne.jp/tagomoris/20120221/1329815126](hhttp://d.hatena.ne.jp/tagomoris/20120221/1329815126) .
 
 
 Requirement
@@ -90,7 +91,8 @@ Finished tests in 0.028020s, 107.0665 tests/s, 0.0000 assertions/s.
 3 tests, 0 assertions, 0 failures, 0 errors, 0 skips
 ```
 
-=== tree result
+tree result
+----------
 
 ```
 $ tree fluent-plugin-moketest
@@ -109,3 +111,10 @@ fluent-plugin-moketest
     └── plugin
         └── test_buf_moketest.rb
 ```
+
+
+Acknowledgement
+---------------
+
+Special thanks to tagomoris!
+
