@@ -36,7 +36,7 @@ input_args () {
     input_arg "Plugin Class Name (ex. Status200CounterOutput)? "
     CLASS_NAME=$RET
     ###
-    PLUG_TYPE=(in buf buf out)
+    PLUG_TYPE=(in out out out)
     CS=(Fluent::Input Fluent::BufferedOutput Fluent::TimeSlicedOutput Fluent::Output)
     TS=(InputTestDriver BufferedOutputTestDriver BufferedOutputTestDriver OutputTestDriver)
     while [ -z "$SUPER_CLASS_NAME" ];
